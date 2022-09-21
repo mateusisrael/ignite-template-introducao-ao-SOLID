@@ -11,6 +11,12 @@ class CreateUserUseCase {
 
   execute({ email, name }: IRequest): User {
     // Complete aqui
+    const user = this.usersRepository.findByEmail(email);
+    if (user) throw Error("Email não disponível");
+
+    const userCreated = this.usersRepository.create({ name, email });
+
+    return userCreated;
   }
 }
 
