@@ -7,6 +7,7 @@ class ListAllUsersController {
 
   handle(request: Request, response: Response): Response {
     // Complete aqui
+    this.listAllUsersUseCase.execute({ user_id: request.id });
   }
 }
 
