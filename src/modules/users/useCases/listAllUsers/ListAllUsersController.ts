@@ -10,13 +10,18 @@ class ListAllUsersController {
 
     try {
       const usersList = this.listAllUsersUseCase.execute({
-        user_id: request.headers.id.toString(),
+        user_id: request.headers.user_id?.toString(),
       });
 
       return response.status(200).json(usersList);
     } catch (error) {
-      console.log("ERROR", error);
-      return response.status(400).json(error);
+      if (
+        error.toString() ===
+          "Error: O usuário não tem permissão para executar essa tarefa" ||
+        error.toString() === "Error: Usuário inexistente"
+      )
+        return response.status(400).json({ error: error.toString() });
+      return response.sendStatus(500);
     }
   }
 }

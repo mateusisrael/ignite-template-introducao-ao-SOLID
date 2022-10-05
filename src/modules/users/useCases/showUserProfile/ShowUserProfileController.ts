@@ -9,11 +9,13 @@ class ShowUserProfileController {
     // Complete aqui
     try {
       const userProfile = this.showUserProfileUseCase.execute({
-        user_id: request.headers.id.toString(),
+        user_id: request.params.user_id,
       });
       return response.status(200).json(userProfile);
     } catch (error) {
-      return response.status(400).send();
+      if (error.toString() === "Error: Usuário não encontrado")
+        return response.status(404).json({ error: error.toString() });
+      return response.sendStatus(500);
     }
   }
 }

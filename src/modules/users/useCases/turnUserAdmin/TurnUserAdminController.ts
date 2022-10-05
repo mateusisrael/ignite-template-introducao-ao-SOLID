@@ -9,12 +9,14 @@ class TurnUserAdminController {
     // Complete aqui
     try {
       const user = this.turnUserAdminUseCase.execute({
-        user_id: request.headers.id.toString(),
+        user_id: request.params.user_id.toString(),
       });
 
-      return response.send(200).json(user);
+      return response.status(200).json(user);
     } catch (error) {
-      return response.send(400);
+      if (error.toString() === "Error: Usuário inexistente")
+        return response.status(404).json({ error });
+      return response.sendStatus(500);
     }
   }
 }

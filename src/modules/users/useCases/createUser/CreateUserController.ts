@@ -12,7 +12,12 @@ class CreateUserController {
       const userCreate = this.createUserUseCase.execute(user);
       return response.status(201).json(userCreate);
     } catch (error) {
-      return response.status(204).send();
+      if (error.toString() === "Error: Email não disponível")
+        return response.status(400).json({
+          error: "Error: Email não disponível",
+        });
+
+      return response.sendStatus(500);
     }
   }
 }
